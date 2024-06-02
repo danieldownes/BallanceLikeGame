@@ -5,11 +5,20 @@ using UnityEngine;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] RollAction roll;
-    [SerializeField] JumpAction jump;
-    [SerializeField] GoundedSense grounded;
+    public GameObject Ball;
+    private RollAction roll;
+    private JumpAction jump;
+    private GoundedSense grounded;
+
     public float jumpForce = 5.0f;
     public float moveForce = 50f;
+
+    private void Awake()
+    {
+        roll = Ball.AddComponent<RollAction>();
+        jump = Ball.AddComponent<JumpAction>();
+        grounded = Ball.AddComponent<GoundedSense>();
+    }
 
     private void Update()
     {

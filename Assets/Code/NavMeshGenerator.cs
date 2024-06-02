@@ -52,7 +52,8 @@ public class NavMeshGenerator : MonoBehaviour
         MeshFilter meshFilter = navMeshObject.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = navMeshObject.AddComponent<MeshRenderer>();
         meshFilter.mesh = navMesh;
-        meshRenderer.material = new Material(Shader.Find("Standard"));
+        meshRenderer.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        meshFilter.transform.Translate(0, 0.01f, 0);
 
         Debug.Log("NavMesh generated with " + vertices.Length + " vertices and " + indices.Length / 3 + " triangles.");
     }

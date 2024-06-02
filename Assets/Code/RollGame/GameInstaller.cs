@@ -1,36 +1,52 @@
-using Unity.AI.Navigation;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class GameInstaller : MonoBehaviour
 {
     [SerializeField] private NavMeshGenerator navMeshGenerator;
 
+    [SerializeField] private ScoreUi scoreUi;
+    private ScoreModel scoreModel;
+    [SerializeField] private PlayerController player;
+
     void Start()
     {
         // Generate level
         generateLevel();
-        navMeshGenerator.GenerateNavMesh();
 
         addStaticBarriers();
 
         // Generate layout
 
         // Apply MeshNav
-        // Add NavMeshSurface and generate NavMesh
-        //applyNavMesh();
+        navMeshGenerator.GenerateNavMesh();
+
 
         var random = FindAnyObjectByType<RandomPointOnMesh>();
         random.CalcAreas(navMeshGenerator.Mesh);
 
+        var collectableCollection = new CollectableFactory();
+        for (int i = 0; i < 50; i++)
+        {
+            Vector3 p = random.GetRandomPointOnMesh(navMeshGenerator.Mesh);
+            collectableCollection.Add(p + Vector3.up * 0.2f, player.Ball);
+        }
+
+        scoreModel = new ScoreModel();
+        scoreUi.Init(scoreModel);
+
+        _ = new CollectableScoreInteractor(scoreModel, collectableCollection);
     }
 
     private void addStaticBarriers()
     {
-        // Add small static barriers randomly on the quad
+        for (int i = 0; i < 100; i++)
+        {
+            addBarrier();
+        }
+    }
 
-        // Add cube
-
+    private static void addBarrier()
+    {
         GameObject barrier = GameObject.CreatePrimitive(PrimitiveType.Cube);
         barrier.transform.localScale = new Vector3(2f, 0.5f, 0.5f);
         barrier.transform.position = new Vector3(Random.Range(-15f, 15f), 0.25f, Random.Range(-15f, 15f));
@@ -38,37 +54,14 @@ public class GameInstaller : MonoBehaviour
         barrier.isStatic = true;
     }
 
-    private void applyNavMesh()
-    {
-        // Create a new GameObject for the NavMesh
-        GameObject navMeshObject = new GameObject("NavMesh");
-        var navmeshsettings = NavMesh.GetSettingsByIndex(0);
-        //navmeshsettings.agentHeight = 0.001f;
-        //navmeshsettings.buildHeightMesh = false;
-        navmeshsettings.agentClimb = 0.1f;
-
-        // Add the NavMeshSurface component to the GameObject
-        NavMeshSurface navMeshSurface = navMeshObject.AddComponent<NavMeshSurface>();
-
-        // Set the parameters for the NavMesh
-        navMeshSurface.agentTypeID = navmeshsettings.agentTypeID; // Use the default agent type
-        navMeshSurface.collectObjects = CollectObjects.All; // Collect all renderers in the scene
-        navMeshSurface.overrideTileSize = true;
-        navMeshSurface.tileSize = 512; // Set the tile size
-
-        // Build the NavMesh
-        navMeshSurface.BuildNavMesh();
-
-    }
-
     private void generateLevel()
     {
         // Create a new GameObject with a Mesh Renderer and Mesh Filter
         GameObject quad = new GameObject("Quad");
-        quad.AddComponent<MeshRenderer>();
+        MeshRenderer meshRenderer = quad.AddComponent<MeshRenderer>();
         quad.AddComponent<MeshFilter>();
 
-        float size = 30f;
+        float size = 20f;
 
         // Assign the mesh data for a quad
         Mesh mesh = new Mesh();
@@ -82,10 +75,12 @@ public class GameInstaller : MonoBehaviour
         mesh.triangles = new int[] { 0, 2, 1, 2, 3, 1 };
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
-
         quad.GetComponent<MeshFilter>().mesh = mesh;
+        quad.AddComponent<MeshCollider>();
+
+        meshRenderer.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        meshRenderer.material.color = Color.blue;
 
         quad.isStatic = true;
-
     }
 }
