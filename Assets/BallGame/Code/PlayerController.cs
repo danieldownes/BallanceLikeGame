@@ -1,54 +1,55 @@
+using ReusableCode.Motion;
+using ReusableCode.Sensors;
 using UnityEngine;
 
 /// <summary>
-/// Bind User input to Player action.
+/// Bind User input to Player actions.
 /// </summary>
-public class PlayerController : MonoBehaviour
+namespace BallGame
 {
-    public GameObject Ball;
-    private RollAction roll;
-    private JumpAction jump;
-    private GoundedSense grounded;
-
-    public float jumpForce = 5.0f;
-    public float moveForce = 50f;
-    private Vector3 spawnPosition;
-
-    private void Awake()
+    public class PlayerController : MonoBehaviour
     {
-        roll = Ball.AddComponent<RollAction>();
-        jump = Ball.AddComponent<JumpAction>();
-        grounded = Ball.AddComponent<GoundedSense>();
-    }
+        public GameObject Ball;
+        private RollAction roll;
+        private JumpAction jump;
+        private GroundedSense grounded;
 
-    private void Update()
-    {
-        if (Input.GetButtonDown("Jump") && grounded.IsGrounded())
+        public float jumpForce = 5.0f;
+        public float moveForce = 50f;
+        private Vector3 spawnPosition;
+
+        private void Awake()
         {
-            jump.ApplyJumpForce(jumpForce);
+            roll = Ball.AddComponent<RollAction>();
+            jump = Ball.AddComponent<JumpAction>();
+            grounded = Ball.AddComponent<GroundedSense>();
         }
-    }
 
-    private void FixedUpdate()
-    {
-        // Bind input using Input System 1, to jump
+        private void Update()
+        {
+            // Bind jump action
+            if (Input.GetButtonDown("Jump") && grounded.IsGrounded())
+                jump.ApplyJumpForce(jumpForce);
+        }
 
-        Vector3 direction = new Vector3(Input.GetAxis("Vertical"), 0, -Input.GetAxis("Horizontal"));
-        roll.ApplyTorqueForce(direction * moveForce * Time.fixedDeltaTime);
+        private void FixedUpdate()
+        {
+            // Bind roll action
+            Vector3 direction = new Vector3(Input.GetAxis("Vertical"), 0, -Input.GetAxis("Horizontal"));
+            roll.ApplyRollDirection(direction * moveForce * Time.fixedDeltaTime);
+        }
 
-    }
+        internal void ResetPosition(Vector3 position)
+        {
+            spawnPosition = position;
+            ResetPosition();
+        }
 
-    internal void Reset(Vector3 position)
-    {
-        spawnPosition = position;
-        Reset();
-    }
-
-    internal void Reset()
-    {
-        Ball.transform.position = spawnPosition;
-        Ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        Ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-
+        internal void ResetPosition()
+        {
+            Ball.transform.position = spawnPosition;
+            jump.Stop();
+            roll.Stop();
+        }
     }
 }

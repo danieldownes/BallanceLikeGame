@@ -1,0 +1,16 @@
+{
+    "name": "BallGame",
+    "rootNamespace": "",
+    "references": [
+        "GUID:fe7fa144f4c79d94da6b75957c5e5908"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

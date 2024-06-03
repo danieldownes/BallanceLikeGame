@@ -1,21 +1,25 @@
-﻿using UnityEngine;
+﻿using ReusableCode.Stats;
+using UnityEngine;
 
-internal class CollectableScoreInteractor
+namespace BallGame
 {
-    private CollectableFactory collectableCollection;
-    private ScoreModel scoreModel;
-
-    public CollectableScoreInteractor(ScoreModel scoreModel, CollectableFactory collectableCollection)
+    internal class CollectableScoreInteractor
     {
-        this.scoreModel = scoreModel;
-        this.collectableCollection = collectableCollection;
+        private CollectibleFactory collectableCollection;
+        private ScoreModel scoreModel;
 
-        collectableCollection.OnCollectableCollected += onCollectableCollected;
-    }
+        public CollectableScoreInteractor(ScoreModel scoreModel, CollectibleFactory collectableCollection)
+        {
+            this.scoreModel = scoreModel;
+            this.collectableCollection = collectableCollection;
 
-    private void onCollectableCollected(GameObject go)
-    {
-        scoreModel.AddScore(1);
-        GameObject.Destroy(go);
+            collectableCollection.OnCollectibleCollected += onCollectableCollected;
+        }
+
+        private void onCollectableCollected(GameObject go)
+        {
+            scoreModel.AddScore(1);
+            GameObject.Destroy(go);
+        }
     }
 }

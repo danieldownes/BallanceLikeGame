@@ -941,8 +941,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 733c58059a442a449b8c27379f652d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreUi: {fileID: 1903574209}
   player: {fileID: 1713871365}
+  scoreUi: {fileID: 1903574209}
 --- !u!4 &1747396518
 Transform:
   m_ObjectHideFlags: 0
@@ -1093,7 +1093,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1747396518}
-  - {fileID: 1552160308}
-  - {fileID: 1903574208}
   - {fileID: 1713871366}
+  - {fileID: 1903574208}
+  - {fileID: 1552160308}
   - {fileID: 511881751}
