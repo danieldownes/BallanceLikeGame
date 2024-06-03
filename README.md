@@ -1,6 +1,6 @@
 # CodeTest - Daniel Downes
 
-This plan was laid out before the coding begain:
+This plan was laid out before the coding began:
 
 1. Add the level geometry, a single Quad.
 2. Add static collision objects to the surface of this Quad.
@@ -44,7 +44,7 @@ The Factory pattern is used to spawn these and apply a TriggerObjectDetection cl
 
 ## 6 - Score
 
-The score is implemented with respect to some design patterns. Rather than a single class to track and display the score, we keep these generic and then bind them to the game implementation via an interactor (usecase) class.
+The score is implemented with respect to some design patterns. Rather than a single class to track and display the score, we keep these generic and then bind them to the game implementation via an interactor (use case) class.
 
 This demonstrates consideration for reusability. Even though the score class is simple, it could be extended. The score system could be extended using inheritance (e.g., to apply combos) with consideration of the Open-closed principle.
 Such segregation also lays a clear path for Unit Testing.
@@ -52,13 +52,13 @@ Such segregation also lays a clear path for Unit Testing.
 # Code Structure
 
 The code is structured in a way that allows for easy extension and modification. The code is divided into the following folders:
- - BallGame - Contains the main game logic and the PlayerController. This is considered the main game assembly that is very app specific.
- - ReusableCode - Contains code used/shared in other projects. This includes the NavMesh generation, RandomPointOnMesh, Score mechanics and some other minor Unity helper code.
+ - BallGame - Contains the main game logic and the PlayerController. This is considered the main game assembly that is very app specific.
+ - ReusableCode - Contains code used/shared in other projects. This includes the NavMesh generation, RandomPointOnMesh, Score mechanics and some other minor Unity helper code.
 
 As this is a 'code' test, it seems appropriate to generate everything via code as much as possible. For general prototype is may make sense, for the sake of time, to make code so verbose.
 
 In the majority of the code, a 'code first' approach is taken, and less Unity Editor inspector wiring is used.
-A 'code first' has the added benefit of being able to be easily tested with Unit Tests, transcribing to other game engines (perhaps using LLM tooling), can also mitigate scene conflicts in a very specific Unity usecase.
+A 'code first' has the added benefit of being able to be easily tested with Unit Tests, transcribing to other game engines (perhaps using LLM tooling), can also mitigate scene conflicts in a very specific Unity use case.
 A few exceptions are made where the Unity Editor is used to demonstrate the ability to use the Unity Editor and to show that the code can be easily modified in the Unity Editor.
 By being verbose its also easier to see where changes happen in diff tools too, which is a nice bonus, the downsize is a lot more code but this can be easily managed by further class separation, eg using the idea of a View class.
 
@@ -84,4 +84,4 @@ No tests were added to the BallGame Assembly, but if they were to be added, they
 e.g., BallGame-PlayModeTests and BallGame-UnitTests.
 In order to save time and demonstrate good usage of tooling, ChatGPT was largely used to generate the automated test code. It is then manually reviewed to ensure the tests make sense.
 The ChatGPT logs links are included in the relevant classes. 
-Its believe LLM code generation should obsolutely be embrased and this is included as example of this. With ethical consideratoin (including in teams), the developer should declare when larger chunks of code have been generated, so to facility code review, and also sustain trust amoung the team.
+Its believe LLM code generation should absolutely be embraced and this is included as example of this. With ethical consideration (including in teams), the developer should declare when larger chunks of code have been generated, so to facility code review, and also sustain trust among the team.
