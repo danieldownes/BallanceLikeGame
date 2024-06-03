@@ -11,5 +11,4 @@ public class TriggerObjectDetection : MonoBehaviour
         if (TriggerObject == other.gameObject)
             OnTrigger?.Invoke();
     }
-
 }
