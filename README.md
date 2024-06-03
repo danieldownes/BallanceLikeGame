@@ -1,10 +1,6 @@
 # CodeTest - Daniel Downes
 
-As this is a 'code' test, it seems appropriate to generate everything via code as much as possible.
-
-To generate the distribution of static barriers, it is considered that closed areas within the available mesh may be encountered. To mitigate this edge case, it is appropriate to use a NavMesh and bake dynamically at runtime, which is possible with NavMeshSurface.
-
-The plan is as follows:
+This plan was laid out before the coding begain:
 
 1. Add the level geometry, a single Quad.
 2. Add static collision objects to the surface of this Quad.
@@ -59,12 +55,16 @@ The code is structured in a way that allows for easy extension and modification.
  - BallGame - Contains the main game logic and the PlayerController. This is considered the main game assembly that is very app specific.
  - ReusableCode - Contains code used/shared in other projects. This includes the NavMesh generation, RandomPointOnMesh, Score mechanics and some other minor Unity helper code.
 
-In the majority of the code, a 'code first' approach is taken. This means that the code is written first and then the Unity Editor is used to bind the code to the game objects. This is done to demonstrate a strong understanding of the code and to show that the code is not dependent on the Unity Editor.
-A few exceptions are made where the Unity Editor is used to demonstrate the ability to use the Unity Editor and to show that the code can be easily modified in the Unity Editor.
+As this is a 'code' test, it seems appropriate to generate everything via code as much as possible. For general prototype is may make sense, for the sake of time, to make code so verbose.
+
+In the majority of the code, a 'code first' approach is taken, and less Unity Editor inspector wiring is used.
 A 'code first' has the added benefit of being able to be easily tested with Unit Tests, transcribing to other game engines (perhaps using LLM tooling), can also mitigate scene conflicts in a very specific Unity usecase.
+A few exceptions are made where the Unity Editor is used to demonstrate the ability to use the Unity Editor and to show that the code can be easily modified in the Unity Editor.
 By being verbose its also easier to see where changes happen in diff tools too, which is a nice bonus, the downsize is a lot more code but this can be easily managed by further class separation, eg using the idea of a View class.
 
+
 # Manual Playtesting iterations
+
 Upon playtesting, values such as speed and jump velocity were exposed in the inspector and adjusted and balanced with the ball Physics material.
 
 There were a few edge cases that were encountered, such as the player being able to jump while in the air. This was quickly fixed by adding a check for the player being grounded before allowing a jump.
@@ -72,13 +72,16 @@ Another issue was the player falling off the side of the level. This was resolve
 
 
 # Graphics
+
 To add some color to the game, a simple shader was added to the Player.
 https://github.com/omid3098/Unity-URP-ScreenSpaceRefraction
-The colors of objects were 
+The colors of objects were chosen in code, including the Nav Mesh generation to see how collectibles are only positions on the generated Nav Mesh.
 
+# Automated Testing
 
-# Testing
-
-The testing is done via Unity Test Runner, and the tests are in the ReusableCode-PlayModeTests and ReusableCode-UnitTests folders.
+Automated testing is done via Unity Test Runner, and the tests are in the ReusableCode-PlayModeTests and ReusableCode-UnitTests folders.
 No tests were added to the BallGame Assembly, but if they were to be added, they would have their own Assembly test folders,
 e.g., BallGame-PlayModeTests and BallGame-UnitTests.
+In order to save time and demonstrate good usage of tooling, ChatGPT was largely used to generate the automated test code. It is then manually reviewed to ensure the tests make sense.
+The ChatGPT logs links are included in the relevant classes. 
+Its believe LLM code generation should obsolutely be embrased and this is included as example of this. With ethical consideratoin (including in teams), the developer should declare when larger chunks of code have been generated, so to facility code review, and also sustain trust amoung the team.
