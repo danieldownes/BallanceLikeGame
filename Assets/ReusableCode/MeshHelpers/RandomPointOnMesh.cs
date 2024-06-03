@@ -11,7 +11,7 @@ namespace ReusableCode.MeshHelpers
     /// This works for all mesh types, and gives fully distributed results.
     /// Gist: https://gist.github.com/danieldownes/b1c9bab09cce013cc30a4198bfeda0aa
     /// </summary>
-    public class RandomPointOnMesh : MonoBehaviour
+    public class RandomPointOnMesh
     {
         [SerializeField] private MeshCollider meshCollider;
 
@@ -21,34 +21,6 @@ namespace ReusableCode.MeshHelpers
         float[] sizes;
         float[] cumulativeSizes;
         float total = 0;
-
-        private void Start()
-        {
-            if (meshCollider == null)
-                CalcAreas(meshCollider.sharedMesh);
-        }
-
-        private void Update()
-        {
-            for (int i = 0; i < 5000; i++)
-                addDebugPoint();
-        }
-
-        void OnDrawGizmos()
-        {
-            foreach (Vector3 debugPoint in debugPoints)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawSphere(debugPoint, 0.01f);
-            }
-        }
-
-        private void addDebugPoint()
-        {
-            randomPoint = GetRandomPointOnMesh(meshCollider.sharedMesh);
-            randomPoint += meshCollider.transform.position;
-            debugPoints.Add(randomPoint);
-        }
 
         public void CalcAreas(Mesh mesh)
         {

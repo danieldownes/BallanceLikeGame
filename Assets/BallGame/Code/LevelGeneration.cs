@@ -5,7 +5,8 @@ using UnityEngine;
 namespace BallGame
 {
     /// <summary>
-    /// As per the README.md, this class generates custom quad meshes for the level, adds static barriers, generates a nav mesh.
+    /// As per the README.md, this class generates custom quad meshes for the level, adds static barriers
+    /// Generates a nav mesh to be used to select points on the nav mesh while avoiding points inside the barriers.
     /// 
     /// </summary>
     public class LevelGeneration
@@ -17,29 +18,26 @@ namespace BallGame
             this.player = player;
         }
 
-        public void Generate(NavMeshGenerator navMeshGenerator, RandomPointOnMesh random, CollectibleFactory collectableFactory)
+        public void GenerateLevelArea()
         {
             generateQuad("LevelArea");
-
-            addStaticBarriers();
-
-            navMeshGenerator.GenerateNavMesh();
-
-            random.CalcAreas(navMeshGenerator.Mesh);
-
-            collectableFactory = new CollectibleFactory();
-            for (int i = 0; i < 50; i++)
-            {
-                Vector3 p = random.GetRandomPointOnMesh(navMeshGenerator.Mesh);
-                collectableFactory.Add(p + Vector3.up * 0.2f, player.Ball);
-            }
-
-            addOutOfBoundsDetection();
         }
 
-        private void addStaticBarriers()
+        public void AddCollectibles(int total, NavMeshGenerator navMeshGenerator, RandomPointOnMesh random, CollectibleFactory collectibleFactory)
         {
-            for (int i = 0; i < 100; i++)
+            navMeshGenerator.GenerateNavMesh();
+            random.CalcAreas(navMeshGenerator.Mesh);
+
+            for (int i = 0; i < total; i++)
+            {
+                Vector3 p = random.GetRandomPointOnMesh(navMeshGenerator.Mesh);
+                collectibleFactory.Add(p + Vector3.up * 0.2f, player.Ball);
+            }
+        }
+
+        public void AddStaticBarriers(int total)
+        {
+            for (int i = 0; i < total; i++)
             {
                 addBarrier();
             }
@@ -55,7 +53,7 @@ namespace BallGame
             addMaterial(barrier, Color.red);
         }
 
-        private void addOutOfBoundsDetection()
+        public void AddOutOfBoundsDetection()
         {
             var outOfBounds = generateQuad("OutOfBoundsArea", 40, false);
             outOfBounds.transform.Translate(Vector3.down * 2);
@@ -95,6 +93,8 @@ namespace BallGame
         private static void addMaterial(GameObject mesh, Color color)
         {
             MeshRenderer meshRenderer = mesh.GetComponent<MeshRenderer>();
+            if (meshRenderer == null)
+                meshRenderer = mesh.AddComponent<MeshRenderer>();
             meshRenderer.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
             meshRenderer.material.color = color;
         }

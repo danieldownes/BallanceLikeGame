@@ -1,60 +1,84 @@
 # CodeTest - Daniel Downes
 
-As this is a 'code' test it seems appretiate to generate everything via code as much as possible.
+As this is a 'code' test, it seems appropriate to generate everything via code as much as possible.
 
-To generate the distrubution of static barriers its considered closed areas within the avilable mesh
-may be encountered. To mitigate this edge case it approritate to use a NavMesh and bake dynamically at 
-runtime, which is possible with NavMeshSurface.
+To generate the distribution of static barriers, it is considered that closed areas within the available mesh may be encountered. To mitigate this edge case, it is appropriate to use a NavMesh and bake dynamically at runtime, which is possible with NavMeshSurface.
 
-The plan for then is to:
+The plan is as follows:
 
-1. Add the level geometry, single Quad.
+1. Add the level geometry, a single Quad.
 2. Add static collision objects to the surface of this Quad.
-3. Add collectable objects to this surface, ensuring they do not collide with the static objects.
-4. Add the player object to the quad, again ensuring they do not collide with the static objects.
-5. Allow collectable objects to be picked up by the player.
-6. Increment score based on this event.
+3. Add collectible objects to this surface, ensuring they do not collide with the static objects.
+4. Add the player object to the Quad, again ensuring it does not collide with the static objects.
+5. Allow collectible objects to be picked up by the player.
+6. Increment the score based on this event.
 
 ## 1 - Generate level, bespoke Quad
 
-Opted to generate a mesh using raw verticies and triangulation. Simply to demonstrate mesh generation code, and allow better control of the shape.
+Opted to generate a mesh using raw vertices and triangulation. Simply to demonstrate mesh generation code and allow better control of the shape.
 
 ## 2 - Add static collision objects
 
-Next cubiod colliders are added randomly over the quad. It does not matter if they overlap as it simply creates a more interesting level. If textures were applied we would see z-order fighting however.
+Next, cuboid colliders are added randomly over the Quad. It does not matter if they overlap as it simply creates a more interesting level. If textures were applied, we would see z-order fighting, however.
 
-## 3 - Add collectable objects
+## 3 - Add collectible objects
 
-In order to do this, it was considered to simply test for a collission while adding a collectable and then repeat until a position was found that did not cause a collision.
+In order to do this, it was considered to simply test for a collision while adding a collectible and then repeat until a position was found that did not cause a collision.
 
-However it was forseen that a NavMesh that was generated and baked before placing the collectables would demonstrate more coding skills and understanding of Unity. It would also allow for irregular level shapes other than a quad, or even multi stage levels. ie platforms at different heights.
+However, it was foreseen that a NavMesh that was generated and baked before placing the collectibles would demonstrate more coding skills and understanding of Unity. It would also allow for irregular level shapes other than a Quad, or even multi-stage levels, i.e., platforms at different heights.
 
 Once the NavMesh is baked, its mesh is then extracted.
 
-It is then passsed to a class that I previous developed to choose random points on a mesh in a distribted manner. The code in RandomPointOnMesh conisders the area of each triangle within a mesh and then randomly selects a point based on linearly distribusion of the mesh area in total.
+It is then passed to a class that I previously developed to choose random points on a mesh in a distributed manner. The code in RandomPointOnMesh considers the area of each triangle within a mesh and then randomly selects a point based on linear distribution of the mesh area in total.
 
 ## 4 - Add the player
 
-The spec suggested to allow the player to move in the x and z plane, however it did not suggest how to do this, for fun a simple rollaball style mechinaism was added from scatch. The idea of bouncing off the obsticles and a ball was a natural choice.
+The spec suggested allowing the player to move in the x and z plane, however, it did not suggest how to do this. For fun, a simple rollaball style mechanism was added from scratch. The idea of bouncing off the obstacles and a ball was a natural choice.
 
-The jump mechanic was added, after a quick test iteration is was clear that the restraint to only jump while grounded was needed.
+The jump mechanic was added. After a quick test iteration, it was clear that the restraint to only jump while grounded was needed.
 
-The mechnisims and detections are added as single classes here and then coupled in the PlayerController class.
+The mechanisms and detections are added as single classes here and then coupled in the PlayerController class.
 
-This better adhears to the Single Responsiblity princile, and makes it easy to play around with different implemenations for each feature while iterating on game mechanics.
+This better adheres to the Single Responsibility principle and makes it easy to play around with different implementations for each feature while iterating on game mechanics.
 
 ## 5 - Allow objects to be collected
 
-Again collectable objects are created purely by code rather than a prevab.
-The Factory pattern is used to spawn these, and apply a TriggerObjectDetection class, to allow for a Action delegate to be hooked in. This is then captured by the Factory class and then relayed to a single event to allow easier listening.
+Again, collectible objects are created purely by code rather than a prefab.
+The Factory pattern is used to spawn these and apply a TriggerObjectDetection class to allow for an Action delegate to be hooked in. This is then captured by the Factory class and then relayed to a single event to allow easier listening.
 
 ## 6 - Score
 
-The score is implemented with respect to some design patterns, rather than a single class to track and display the score, we keep these generic and then bind them to the game implementation via a interactor class.
+The score is implemented with respect to some design patterns. Rather than a single class to track and display the score, we keep these generic and then bind them to the game implementation via an interactor (usecase) class.
 
-This demonstrates consideration reusablity, even though the score class is simple it could be extended. The score system could be extended using inheritance (eg to apply combos) with consideration the Open-closed principle.
+This demonstrates consideration for reusability. Even though the score class is simple, it could be extended. The score system could be extended using inheritance (e.g., to apply combos) with consideration of the Open-closed principle.
 Such segregation also lays a clear path for Unit Testing.
+
+# Code Structure
+
+The code is structured in a way that allows for easy extension and modification. The code is divided into the following folders:
+ - BallGame - Contains the main game logic and the PlayerController. This is considered the main game assembly that is very app specific.
+ - ReusableCode - Contains code used/shared in other projects. This includes the NavMesh generation, RandomPointOnMesh, Score mechanics and some other minor Unity helper code.
+
+In the majority of the code, a 'code first' approach is taken. This means that the code is written first and then the Unity Editor is used to bind the code to the game objects. This is done to demonstrate a strong understanding of the code and to show that the code is not dependent on the Unity Editor.
+A few exceptions are made where the Unity Editor is used to demonstrate the ability to use the Unity Editor and to show that the code can be easily modified in the Unity Editor.
+A 'code first' has the added benefit of being able to be easily tested with Unit Tests, transcribing to other game engines (perhaps using LLM tooling), can also mitigate scene conflicts in a very specific Unity usecase.
+By being verbose its also easier to see where changes happen in diff tools too, which is a nice bonus, the downsize is a lot more code but this can be easily managed by further class separation, eg using the idea of a View class.
+
+# Manual Playtesting iterations
+Upon playtesting, values such as speed and jump velocity were exposed in the inspector and adjusted and balanced with the ball Physics material.
+
+There were a few edge cases that were encountered, such as the player being able to jump while in the air. This was quickly fixed by adding a check for the player being grounded before allowing a jump.
+Another issue was the player falling off the side of the level. This was resolved by adding another check to see if the player had fallen off the level and then resetting the player to the original spawn position.
 
 
 # Graphics
+To add some color to the game, a simple shader was added to the Player.
 https://github.com/omid3098/Unity-URP-ScreenSpaceRefraction
+The colors of objects were 
+
+
+# Testing
+
+The testing is done via Unity Test Runner, and the tests are in the ReusableCode-PlayModeTests and ReusableCode-UnitTests folders.
+No tests were added to the BallGame Assembly, but if they were to be added, they would have their own Assembly test folders,
+e.g., BallGame-PlayModeTests and BallGame-UnitTests.

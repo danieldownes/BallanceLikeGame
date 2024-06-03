@@ -1,7 +1,14 @@
+using System.Collections;
 using NUnit.Framework;
+using ReusableCode.Sensors;
 using UnityEngine;
 using UnityEngine.TestTools;
 
+/// <summary>
+/// In order to save time and demonstrate good usage of tooling,
+/// this PlayMode test was LLM Generated:
+/// https://chatgpt.com/share/6f9e0391-e349-4efa-b998-b06b946ce9b0
+/// </summary>
 public class GroundedSenseTests
 {
     private GameObject testObject;
@@ -10,7 +17,6 @@ public class GroundedSenseTests
     [SetUp]
     public void Setup()
     {
-        // Setup the environment
         testObject = new GameObject();
         var collider = testObject.AddComponent<BoxCollider>();
         groundedSense = testObject.AddComponent<GroundedSense>();
@@ -23,7 +29,6 @@ public class GroundedSenseTests
     [TearDown]
     public void Teardown()
     {
-        // Cleanup
         GameObject.DestroyImmediate(testObject);
         GameObject.DestroyImmediate(GameObject.Find("Plane"));
     }

@@ -921,9 +921,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1747396518}
   - component: {fileID: 1747396517}
-  - component: {fileID: 1747396520}
   m_Layer: 0
-  m_Name: Installer
+  m_Name: GameInstaller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -958,20 +957,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1747396520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1747396516}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3707d2707032846409a0e2990b4403f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meshCollider: {fileID: 0}
-  debugPoints: []
 --- !u!1 &1903574207
 GameObject:
   m_ObjectHideFlags: 0
