@@ -52,10 +52,14 @@ Such segregation also lays a clear path for Unit Testing.
 # Code Structure
 
 The code is structured in a way that allows for easy extension and modification. The code is divided into the following folders:
+
  - BallGame - Contains the main game logic and the PlayerController. This is considered the main game assembly that is very app specific.
+ 
  - ReusableCode - Contains code used/shared in other projects. This includes the NavMesh generation, RandomPointOnMesh, Score mechanics and some other minor Unity helper code.
 
+
 As this is a 'code' test, it seems appropriate to generate everything via code as much as possible. For general prototype is may make sense, for the sake of time, to make code so verbose.
+
 
 In the majority of the code, a 'code first' approach is taken, and less Unity Editor inspector wiring is used.
 A 'code first' has the added benefit of being able to be easily tested with Unit Tests, transcribing to other game engines (perhaps using LLM tooling), can also mitigate scene conflicts in a very specific Unity use case.
