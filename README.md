@@ -74,14 +74,21 @@ Another issue was the player falling off the side of the level. This was resolve
 # Graphics
 
 To add some color to the game, a simple shader was added to the Player.
+
 https://github.com/omid3098/Unity-URP-ScreenSpaceRefraction
+
 The colors of objects were chosen in code, including the Nav Mesh generation to see how collectibles are only positions on the generated Nav Mesh.
+
 
 # Automated Testing
 
 Automated testing is done via Unity Test Runner, and the tests are in the ReusableCode-PlayModeTests and ReusableCode-UnitTests folders.
+
 No tests were added to the BallGame Assembly, but if they were to be added, they would have their own Assembly test folders,
 e.g., BallGame-PlayModeTests and BallGame-UnitTests.
+
 In order to save time and demonstrate good usage of tooling, ChatGPT was largely used to generate the automated test code. It is then manually reviewed to ensure the tests make sense.
+
 The ChatGPT logs links are included in the relevant classes. 
+
 Its believe LLM code generation should absolutely be embraced and this is included as example of this. With ethical consideration (including in teams), the developer should declare when larger chunks of code have been generated, so to facility code review, and also sustain trust among the team.
